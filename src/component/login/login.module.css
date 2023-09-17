@@ -68,9 +68,9 @@
     background-color: rgba(207, 207, 207, 0.25);
     color: rgba(0, 0, 0, 0.75);
 }
-@media only screen and (max-width:768px) {
+ @media  (max-width:768px) {
     .title{
-        font-size: 40px;
+        font-size: 30px;
         margin-bottom: 50px;
         text-align: center;
     }
@@ -80,4 +80,16 @@
     .google__btn{
         margin-bottom: 20px;
     }
+        .join {
+            padding: 8px 10px;
+        }
+} 
+@media (max-width:381px) {
+.btns{
+    column-gap: 5px;
+}
+.join{
+    padding: 8px 10px;
+}
+
 }
