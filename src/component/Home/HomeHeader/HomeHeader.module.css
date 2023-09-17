@@ -85,5 +85,8 @@ height: 65px;
             font-family: 'JosefinSans-Light';
             font-size: 12px;
         }
+        .user{
+            width: 15px;
+        }
     
 }
