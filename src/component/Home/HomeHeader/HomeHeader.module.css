@@ -81,5 +81,9 @@ height: 65px;
     .work{
         display: none;
     }
+        .nav__link p {
+            font-family: 'JosefinSans-Light';
+            font-size: 12px;
+        }
     
 }
