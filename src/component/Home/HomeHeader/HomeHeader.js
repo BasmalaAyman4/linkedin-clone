@@ -26,7 +26,7 @@ const Home = () => {
                         </div>
                         <div className={`${styles.all__link}`}>
                             <NavLink to='/home' className={`${styles.nav__link}`}>
-                                <img alt='' src={home} className={`${styles.user}`} />
+                                <img alt='' src={home} className={`${styles.user}`} fill='#fff' />
                                 <p>Home</p>
                             </NavLink>
                             <NavLink to='/network' className={`${styles.nav__link}`}>
@@ -45,10 +45,12 @@ const Home = () => {
                                 <img alt='' src={notification} className={`${styles.user}`} />
                                 <p>notification</p>
                             </NavLink>
-                            <NavLink to='/me' className={`${styles.nav__link}`}>
+                            <NavLink to='/me' className={`${styles.nav__link} ${styles.me}`}>
                                 <img alt='' src={user} className={`${styles.user}`} />
                                 <p>Me <span><img alt='' src={down} /></span></p>
+                                <p className={`${styles.out}`}>Sign out</p>
                             </NavLink>
+
                             <NavLink to='/work' className={`${styles.nav__link} ${styles.work}`}>
                                 <img alt='' src={work} className={`${styles.user}`} />
                                 <p>work<span><img alt='' src={down} /></span></p>
@@ -56,6 +58,7 @@ const Home = () => {
                         </div>
                     </Nav>
                 </Container>
+
             </header>
         </>
     )
