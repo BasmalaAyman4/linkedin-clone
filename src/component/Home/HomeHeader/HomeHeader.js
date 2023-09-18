@@ -13,7 +13,20 @@ import notification from '../../../assets/images/nav-notifications.svg'
 import user from '../../../assets/images/user.svg'
 import down from '../../../assets/images/down-icon.svg'
 import work from "../../../assets/images/nav-work.svg"
+import { signOut } from "firebase/auth"
+import { auth } from '../../../firebase';
+import useAuth from '../../../custom-Hook/useAuth';
 const Home = () => {
+    const { currentUser } = useAuth()
+    const logout = () => {
+        signOut(auth).then(() => {
+            console.log('Logged out')
+        }).catch(err => {
+            console.log(err.message)
+        })
+
+    }
+
     return (
         <>
             <header className={`${styles.header}`}>
@@ -45,10 +58,10 @@ const Home = () => {
                                 <img alt='' src={notification} className={`${styles.user}`} />
                                 <p>notification</p>
                             </NavLink>
-                            <NavLink to='/me' className={`${styles.nav__link} ${styles.me}`}>
-                                <img alt='' src={user} className={`${styles.user}`} />
+                            <NavLink to='/' className={`${styles.nav__link} ${styles.me}`}>
+                                <img alt='' src={currentUser ? currentUser.photoURL : user} className={`${styles.user}`} />
                                 <p>Me <span><img alt='' src={down} /></span></p>
-                                <p className={`${styles.out}`}>Sign out</p>
+                                <p className={`${styles.out}`} onClick={logout}>Sign out</p>
                             </NavLink>
 
                             <NavLink to='/work' className={`${styles.nav__link} ${styles.work}`}>

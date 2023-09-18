@@ -227,7 +227,8 @@ color: #4f87cc;
             align-items: center;
             column-gap: 10px;
 }
-.dot__btn{
+.dot__btn,
+.reacts{
         outline: none;
             color: rgba(0, 0, 0, 0.6);
             font-size: 14px;
@@ -290,4 +291,25 @@ color: #4f87cc;
     padding: 0 20px 0 20px !important;
     margin-bottom: 5px !important ;
 
+}
+.reacts span{
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 5px;
+
+}
+.comments{
+    text-decoration: none !important;
+}
+.width__img{
+    width: 20px;
+}
+.reacts__icon{
+    margin-right: 10px;
+}
+.reacts__icon span{
+    color: #777;
+}
+.reacts__icon:hover span{
+    color: #000;
 }

@@ -15,7 +15,13 @@ import video from '../../../assets/images/viseo.png'
 import artical from '../../../assets/images/artical.png'
 import dot from '../../../assets/images/dot.png'
 import post from '../../../assets/images/1500x500.jpg'
+import like from '../../../assets/images/like.png'
+import comment from '../../../assets/images/comment.png'
+import share from '../../../assets/images/share.png'
+import send from '../../../assets/images/send.png'
+import useAuth from '../../../custom-Hook/useAuth';
 const HomeContent = () => {
+    const { currentUser } = useAuth()
     return (
         <>
             <section className={`${styles.content}`}>
@@ -25,13 +31,13 @@ const HomeContent = () => {
                         <span>Find talend pros in record time with Upwork and keep business moving.</span>
                     </div>
                     <Row className={`${styles.sides}`}>
-                        <Col lg='3' >
+                        <Col lg='3' className='mb-3' >
                             <div className={`${styles.left}`}>
                                 <div className={`${styles.header}`}>
                                     <img alt='' src={img} className={`${styles.photo}`} />
                                 </div>
                                 <div className={`${styles.user}`}>
-                                    <h5>welcome , basmala ayman</h5>
+                                    {currentUser ? <h5>welcome , {currentUser.displayName} </h5> : <h5>welcome , user </h5>}
                                     <p className={`${styles.add}`}>Add a photo</p>
                                 </div>
                                 <div className={`${styles.connect}`}>
@@ -58,10 +64,10 @@ const HomeContent = () => {
                                 </div>
                             </div>
                         </Col>
-                        <Col lg='6' >
+                        <Col lg='6' className='mb-3' >
                             <div className={`${styles.main}`}>
                                 <div className={`${styles.post}`}>
-                                    <img alt='' src={user} className={`${styles.userimg}`} />
+                                    <img alt='' src={currentUser ? currentUser.photoURL : user} className={`${styles.userimg}`} />
                                     <button className={`${styles.post__btn}`}>Start a post</button>
                                 </div>
                                 <div className={`${styles.social__btn}`}>
@@ -86,10 +92,10 @@ const HomeContent = () => {
                             <div className={`${styles.main} ${styles.sec}`}>
                                 <div className={`${styles.info}`}>
                                     <div className={`${styles.info__details}`}>
-                                        <img alt='' src={user} className={`${styles.img}`} />
+                                        <img alt='' src={currentUser ? currentUser.photoURL : user} className={`${styles.img}`} />
                                         <div className={`${styles.user__info}`}>
-                                            <p>Basmala Ayman</p>
-                                            <p>basmala11@gmail.com</p>
+                                            <p>{currentUser.displayName}</p>
+                                            <p>{currentUser.email}</p>
                                             <p>4/1/2002</p>
                                         </div>
                                     </div>
@@ -97,9 +103,33 @@ const HomeContent = () => {
                                 </div>
                                 <p className={`${styles.post__para}`}>blablablablablabla</p>
                                 <img alt='' src={post} className={`${styles.postimg}`} />
+                                <button className={`${styles.reacts}`}>
+                                    <img alt='' src='https://static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb' />
+                                    <img alt='' src='https://static-exp1.licdn.com/sc/h/5thsbmikm6a8uov24ygwd914f' />
+                                    <span>75</span>
+                                </button>
+                                <Link to='' className={`${styles.comments}`}>2 Comments</Link>
+                                <div>
+                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
+                                        <img alt='' src={like} className={`${styles.social__img}`} />
+                                        <span>Like</span>
+                                    </button>
+                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
+                                        <img alt='' src={comment} className={`${styles.social__img} ${styles.width__img}`} />
+                                        <span>Comment</span>
+                                    </button>
+                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
+                                        <img alt='' src={share} className={`${styles.social__img} ${styles.width__img}`} />
+                                        <span>Share</span>
+                                    </button>
+                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
+                                        <img alt='' src={send} className={`${styles.social__img} ${styles.width__img}`} />
+                                        <span>Send</span>
+                                    </button>
+                                </div>
                             </div>
                         </Col>
-                        <Col lg='3'  >
+                        <Col lg='3' className='mb-3' >
                             <div className={`${styles.right}`}>
                                 <div className={`${styles.right__body}`} >
                                     <p>Add to your feed</p>
