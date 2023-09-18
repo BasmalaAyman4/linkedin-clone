@@ -8,6 +8,13 @@ import item from '../../../assets/images/item-icon.svg'
 import plus from '../../../assets/images/plus-icon.svg'
 import feed from '../../../assets/images/feed-icon.svg'
 import next from '../../../assets/images/right-icon.svg'
+import user from '../../../assets/images/user.svg'
+import photo from '../../../assets/images/download.png'
+import event from '../../../assets/images/download (1).png'
+import video from '../../../assets/images/viseo.png'
+import artical from '../../../assets/images/artical.png'
+import dot from '../../../assets/images/dot.png'
+import post from '../../../assets/images/1500x500.jpg'
 const HomeContent = () => {
     return (
         <>
@@ -51,8 +58,46 @@ const HomeContent = () => {
                                 </div>
                             </div>
                         </Col>
-                        <Col lg='6' className={`${styles.main}`}>
-                            jyhn,
+                        <Col lg='6' >
+                            <div className={`${styles.main}`}>
+                                <div className={`${styles.post}`}>
+                                    <img alt='' src={user} className={`${styles.userimg}`} />
+                                    <button className={`${styles.post__btn}`}>Start a post</button>
+                                </div>
+                                <div className={`${styles.social__btn}`}>
+                                    <button className={`${styles.btns}`}>
+                                        <img alt='' src={photo} className={`${styles.social__img}`} />
+                                        <span className={`${styles.social__para}`}>Photo</span>
+                                    </button>
+                                    <button className={`${styles.btns}`}>
+                                        <img alt='' src={video} className={`${styles.social__img}`} />
+                                        <span className={`${styles.social__para}`}>Video</span>
+                                    </button>
+                                    <button className={`${styles.btns}`}>
+                                        <img alt='' src={event} className={`${styles.social__img}`} />
+                                        <span className={`${styles.social__para}`}>Event</span>
+                                    </button>
+                                    <button className={`${styles.btns}`}>
+                                        <img alt='' src={artical} className={`${styles.social__img}`} />
+                                        <span className={`${styles.social__para}`}>Artical</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div className={`${styles.main} ${styles.sec}`}>
+                                <div className={`${styles.info}`}>
+                                    <div className={`${styles.info__details}`}>
+                                        <img alt='' src={user} className={`${styles.img}`} />
+                                        <div className={`${styles.user__info}`}>
+                                            <p>Basmala Ayman</p>
+                                            <p>basmala11@gmail.com</p>
+                                            <p>4/1/2002</p>
+                                        </div>
+                                    </div>
+                                    <button className={`${styles.dot__btn}`}><img alt='' src={dot} className={`${styles.dot}`} /></button>
+                                </div>
+                                <p className={`${styles.post__para}`}>blablablablablabla</p>
+                                <img alt='' src={post} className={`${styles.postimg}`} />
+                            </div>
                         </Col>
                         <Col lg='3'  >
                             <div className={`${styles.right}`}>
