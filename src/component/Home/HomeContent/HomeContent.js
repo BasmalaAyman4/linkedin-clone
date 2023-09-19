@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './HomeContent.module.css'
 import { Col, Container, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import img from '../../../assets/images/photo.svg'
 import connection from '../../../assets/images/widget-icon.svg'
 import item from '../../../assets/images/item-icon.svg'
@@ -20,8 +20,91 @@ import comment from '../../../assets/images/comment.png'
 import share from '../../../assets/images/share.png'
 import send from '../../../assets/images/send.png'
 import useAuth from '../../../custom-Hook/useAuth';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import '../HomeHeader/home.css'
+import ReactPlayer from 'react-player'
+import play from '../../../assets/images/youtube-removebg-preview.png'
+import { db, storage } from '../../../firebase'
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { collection, addDoc, Timestamp } from 'firebase/firestore'
 const HomeContent = () => {
     const { currentUser } = useAuth()
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const [textarea, setTextArea] = useState('')
+    const [imgupload, setImg] = useState('')
+    const [videoplay, setVideo] = useState('')
+    const [area, setArea] = useState('')
+    const navigate = useNavigate()
+    const handleImg = (e) => {
+        const image = e.target.files[0];
+        if (image === "" || image === undefined) {
+            alert(`not an image , the file is a ${typeof image}`);
+            return;
+        }
+        setImg(image)
+    }
+    const switchArea = (area) => {
+        setImg('')
+        setVideo('')
+        setArea(area)
+    }
+    const addArticales = async (e) => {
+        e.preventDefault()
+
+        try {
+            if (imgupload !== "") {
+                const docRef = await collection(db, 'Articales')
+                const filePath = `Images/${Date.now() + imgupload.name}`;
+                const storeRef = ref(storage, filePath)
+                const uploadTask = uploadBytesResumable(storeRef, imgupload)
+                uploadTask.on(
+                    (error) => {
+                        console.log('images not uploades')
+                    },
+                    async () => {
+                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                        await addDoc(docRef, {
+                            actor: {
+                                description: currentUser.email,
+                                title: currentUser.displayName,
+                                image: currentUser.photoURL,
+                                date: Timestamp.now()
+                            },
+                            comments: 0,
+                            sharedImage: downloadURL,
+                            description: textarea,
+                            sharedvideo: videoplay
+                        })
+                    })
+                console.log('Product successfully added')
+                navigate("/home")
+            } else if (videoplay) {
+                const docRef = await collection(db, 'Articales')
+                await addDoc(docRef, {
+                    actor: {
+                        description: currentUser.email,
+                        title: currentUser.displayName,
+                        image: currentUser.photoURL,
+                        date: Timestamp.now()
+                    },
+                    comments: 0,
+                    sharedImage: "",
+                    description: textarea,
+                    sharedvideo: videoplay
+                })
+            }
+
+        } catch (err) {
+            console.log('product not added')
+
+        }
+        setShow(false)
+
+    }
     return (
         <>
             <section className={`${styles.content}`}>
@@ -68,8 +151,79 @@ const HomeContent = () => {
                             <div className={`${styles.main}`}>
                                 <div className={`${styles.post}`}>
                                     <img alt='' src={currentUser ? currentUser.photoURL : user} className={`${styles.userimg}`} />
-                                    <button className={`${styles.post__btn}`}>Start a post</button>
+                                    <button className={`${styles.post__btn}`} onClick={handleShow}>Start a post</button>
                                 </div>
+                                <Modal show={show} onHide={handleClose}>
+
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Create a post</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+
+
+
+                                        <div className={`${styles.info__details}`}>
+                                            <img alt='' src={currentUser ? currentUser.photoURL : user} className={`${styles.userimg}`} />
+                                            <div className={`${styles.user__info}`}>
+                                                <p className={`${styles.para}`}>{currentUser.displayName}</p>
+                                            </div>
+                                        </div>
+                                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                            <Form.Control as="textarea" rows={4} placeholder='what do you want to talk about ?'
+                                                className={`${styles.input}`}
+                                                value={textarea}
+                                                onChange={(e) => setTextArea(e.target.value)}
+                                                name="textarea" />
+                                        </Form.Group>
+                                        {
+                                            area === "image" ?
+                                                <>
+                                                    <input
+                                                        type='file'
+                                                        accept='image/gif , image/jpeg , image/png'
+                                                        name='image'
+                                                        id='file'
+                                                        style={{ display: "none" }}
+                                                        onChange={handleImg} />
+                                                    <p className={`${styles.select}`}>
+                                                        <label htmlFor='file' >select an image to share</label>
+                                                    </p>
+                                                    {imgupload && <img src={URL.createObjectURL(imgupload)} className={`${styles.uploadimg}`} />}
+                                                </>
+                                                :
+                                                area === "media" && (
+                                                    <>
+                                                        <div className={`${styles.play}`}>
+                                                            <input
+                                                                type='text'
+                                                                placeholder='please input a video link'
+                                                                value={videoplay}
+                                                                onChange={(e) => { setVideo(e.target.value) }}
+                                                            />
+                                                        </div>
+                                                        {videoplay && (<ReactPlayer width={"100%"} url={videoplay} />)}
+                                                    </>
+                                                )
+                                        }
+
+
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <div>
+                                            <button className={`${styles.reacts}`} onClick={() => switchArea("image")}>
+                                                <img alt='' src={photo} className={`${styles.social__img}`} />
+                                            </button>
+                                            <button className={`${styles.reacts}`} onClick={() => switchArea("media")}>
+                                                <img alt='' src={play} className={`${styles.social__ved}`} />
+                                            </button>
+
+                                        </div>
+                                        <Button disabled={!textarea ? true : false} className={`${styles.share__btn}`} onClick={addArticales} >
+                                            Post
+                                        </Button>
+                                    </Modal.Footer>
+
+                                </Modal>
                                 <div className={`${styles.social__btn}`}>
                                     <button className={`${styles.btns}`}>
                                         <img alt='' src={photo} className={`${styles.social__img}`} />
@@ -157,7 +311,7 @@ const HomeContent = () => {
                         </Col>
                     </Row>
                 </Container>
-            </section>
+            </section >
         </>
     )
 }

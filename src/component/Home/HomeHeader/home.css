@@ -7,3 +7,9 @@ border: 0px solid #24526dda !important;
 .active p{
     color: #000 !important;
 }
+.modal-footer{
+    border-top: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
