@@ -29,6 +29,7 @@ import play from '../../../assets/images/youtube-removebg-preview.png'
 import { db, storage } from '../../../firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
+import useGetData from '../../../custom-Hook/useGetData'
 const HomeContent = () => {
     const { currentUser } = useAuth()
     const [show, setShow] = useState(false);
@@ -39,6 +40,7 @@ const HomeContent = () => {
     const [videoplay, setVideo] = useState('')
     const [area, setArea] = useState('')
     const navigate = useNavigate()
+    const { data: articalesData, loading } = useGetData('Articales')
     const handleImg = (e) => {
         const image = e.target.files[0];
         if (image === "" || image === undefined) {
@@ -243,45 +245,61 @@ const HomeContent = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className={`${styles.main} ${styles.sec}`}>
-                                <div className={`${styles.info}`}>
-                                    <div className={`${styles.info__details}`}>
-                                        <img alt='' src={currentUser ? currentUser.photoURL : user} className={`${styles.img}`} />
-                                        <div className={`${styles.user__info}`}>
-                                            <p>{currentUser.displayName}</p>
-                                            <p>{currentUser.email}</p>
-                                            <p>4/1/2002</p>
-                                        </div>
-                                    </div>
-                                    <button className={`${styles.dot__btn}`}><img alt='' src={dot} className={`${styles.dot}`} /></button>
-                                </div>
-                                <p className={`${styles.post__para}`}>blablablablablabla</p>
-                                <img alt='' src={post} className={`${styles.postimg}`} />
-                                <button className={`${styles.reacts}`}>
-                                    <img alt='' src='https://static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb' />
-                                    <img alt='' src='https://static-exp1.licdn.com/sc/h/5thsbmikm6a8uov24ygwd914f' />
-                                    <span>75</span>
-                                </button>
-                                <Link to='' className={`${styles.comments}`}>2 Comments</Link>
-                                <div>
-                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
-                                        <img alt='' src={like} className={`${styles.social__img}`} />
-                                        <span>Like</span>
-                                    </button>
-                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
-                                        <img alt='' src={comment} className={`${styles.social__img} ${styles.width__img}`} />
-                                        <span>Comment</span>
-                                    </button>
-                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
-                                        <img alt='' src={share} className={`${styles.social__img} ${styles.width__img}`} />
-                                        <span>Share</span>
-                                    </button>
-                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
-                                        <img alt='' src={send} className={`${styles.social__img} ${styles.width__img}`} />
-                                        <span>Send</span>
-                                    </button>
-                                </div>
-                            </div>
+                            {
+                                loading ? <h3>loading ....</h3>
+                                    :
+                                    articalesData.map((item, index) => (
+                                        <>
+                                            <div className={`${styles.main} ${styles.sec}`} key={index}>
+                                                <div className={`${styles.info}`}>
+                                                    <div className={`${styles.info__details}`}>
+                                                        <img alt='' src={item.actor.image} className={`${styles.img}`} />
+                                                        <div className={`${styles.user__info}`}>
+                                                            <p>{item.actor.title}</p>
+                                                            <p>{item.actor.description}</p>
+                                                            <p>{item.actor.date.toDate().toLocaleDateString()}</p>
+                                                        </div>
+                                                    </div>
+                                                    <button className={`${styles.dot__btn}`}><img alt='' src={dot} className={`${styles.dot}`} /></button>
+                                                </div>
+                                                <p className={`${styles.post__para}`}>{item.description}</p>
+                                                {
+                                                    item.sharedImage ?
+                                                        <img alt='' src={item.sharedImage} className={`${styles.postimg}`} />
+                                                        :
+                                                        <ReactPlayer width={"100%"} url={item.sharedvideo} />
+
+                                                }
+
+                                                <button className={`${styles.reacts}`}>
+                                                    <img alt='' src='https://static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb' />
+                                                    <img alt='' src='https://static-exp1.licdn.com/sc/h/5thsbmikm6a8uov24ygwd914f' />
+                                                    <span>75</span>
+                                                </button>
+                                                <Link to='' className={`${styles.comments}`}>{item.comments} Comments</Link>
+                                                <div>
+                                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
+                                                        <img alt='' src={like} className={`${styles.social__img}`} />
+                                                        <span>Like</span>
+                                                    </button>
+                                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
+                                                        <img alt='' src={comment} className={`${styles.social__img} ${styles.width__img}`} />
+                                                        <span>Comment</span>
+                                                    </button>
+                                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
+                                                        <img alt='' src={share} className={`${styles.social__img} ${styles.width__img}`} />
+                                                        <span>Share</span>
+                                                    </button>
+                                                    <button className={`${styles.reacts} ${styles.reacts__icon}`}>
+                                                        <img alt='' src={send} className={`${styles.social__img} ${styles.width__img}`} />
+                                                        <span>Send</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ))
+                            }
+
                         </Col>
                         <Col lg='3' className='mb-3' >
                             <div className={`${styles.right}`}>
